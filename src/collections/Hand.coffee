@@ -6,7 +6,7 @@ class window.Hand extends Backbone.Collection
   hit: ->
     @add(@deck.pop())
     # check minScore, if over 21 trigger bust event to gameModel
-    @trigger 'busted', @ if @minScore > 21 
+    @trigger 'busted', @ if @minScore() > 21 
 
   stand: ->
     @trigger 'stand', @

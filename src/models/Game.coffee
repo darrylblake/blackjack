@@ -1,16 +1,23 @@
 class window.Game extends Backbone.Model
   initialize: ->
     @set 'deck', deck = new Deck()
-    @set 'playerHand', deck.dealPlayer()
-    @set 'dealerHand', deck.dealDealer()
+    @dealHands()
 
-    holder = @get 'playerHand'
-    holder.on 'busted', @hello
-    console.log holder
+    #console.log holder
     
 
   # on all player hands stood
   # play dealer hand till 17 or over
-  hello: ->
-    alert 'hello'
+  lose: ->
+    alert 'Dealer Won!!!'
+    @dealHands()
+
+  dealHands: ->
+    @set 'playerHand', @get('deck').dealPlayer()
+    @set 'dealerHand', @get('deck').dealDealer()
+
+    @get 'playerHand'
+      .on 'busted', => @lose()
+
+
 

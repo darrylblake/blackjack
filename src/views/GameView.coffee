@@ -10,6 +10,7 @@ class window.GameView extends Backbone.View
     'click .stand-button': -> @model.get('playerHand').stand()
 
   initialize: ->
+    @model.on 'change:dealerHand', => @render()
     @render();
 
   render: ->
