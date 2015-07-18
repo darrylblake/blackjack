@@ -12,6 +12,7 @@ class window.GameView extends Backbone.View
     'click .action.stand': -> @model.get('playerHand').stand()
 
   initialize: ->
+    # Only hands should render on change, not the entire game view
     @model.on 'change:dealerHand', => @render()
     @model.on 'playerBusted', => @gameOver 'Busted'
     @model.on 'playerWon', => @gameOver 'pWon'
@@ -38,6 +39,10 @@ class window.GameView extends Backbone.View
       .text 'Deal'
       .removeClass 'hit'
       .addClass 'deal'
+
+    @$el
+      .find '.action.stand'
+      .attr 'disabled', true
 
   newDeal: ->
     @$el.find('.message').text('')

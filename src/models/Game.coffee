@@ -9,7 +9,6 @@ class window.Game extends Backbone.Model
     #console.log holder
     @get 'deck'
       .on 'empty', => @reshuffle()
-    
 
   # on all player hands stood
   # play dealer hand till 17 or over
@@ -49,8 +48,14 @@ class window.Game extends Backbone.Model
   checkScores: ->
     dealerScoreMin = @get('dealerHand').scores()[0]
     dealerScoreMax = @get('dealerHand').scores()[1]
-    playerScore = @get('playerHand').minScore()
-    if dealerScoreMax > 21 or playerScore > dealerScoreMax
+
+    playerScoreMin = @get('playerHand').scores()[0]
+    playerScoreMax = @get('playerHand').scores()[1]
+
+    playerScore = if playerScoreMax > 21 then playerScoreMin else playerScoreMax 
+    dealerScore = if dealerScoreMax > 21 then dealerScoreMin else dealerScoreMax 
+
+    if dealerScore > 21 or playerScore > dealerScore
       @trigger 'playerWon', @
     else 
       @trigger 'dealerWon', @
