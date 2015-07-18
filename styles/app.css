@@ -1,4 +1,4 @@
-.card {
+/*.card {
   float: left;
   border: solid 1px black;
   width: 120px;
@@ -9,9 +9,47 @@
 
 .covered {
   background-color: black;
-  background-image: url("../img/card-back.png");
-}
+  background-image: url("../img/card-back.png") !important;
+}*/
 
 .hand {
   overflow: auto;
+}
+
+
+.cardContainer { 
+  float: left;
+  width: 120px;
+  height: 167px;
+  position: relative;
+  perspective: 800px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.card span {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card .front {
+  background: red;
+}
+
+.card .back {
+  background: blue;
+  transform: rotateX( 180deg );
+}
+
+.covered .card {
+  transform: rotateX( 180deg );
 }
