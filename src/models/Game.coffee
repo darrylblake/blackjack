@@ -23,6 +23,16 @@ class window.Game extends Backbone.Model
     @set 'playerHand', @get('deck').dealPlayer()
     @set 'dealerHand', @get('deck').dealDealer()
 
+    @get 'playerHand'
+      .on 'stand', => 
+        @get 'dealerHand'
+        .dealerPlay()
+
+    @get 'playerHand'
+      .on 'busted', =>  @trigger 'playerBusted', @
+
+    @get 'dealerHand'
+      .on 'dealerDone', => @checkScores()
 
   resetHands: ->
     # empty hands
@@ -35,6 +45,17 @@ class window.Game extends Backbone.Model
     deck = @get 'deck'
     @moveFrom discard, deck
     deck.shuffle()
+
+  checkScores: ->
+    dealerScoreMin = @get('dealerHand').scores()[0]
+    dealerScoreMax = @get('dealerHand').scores()[1]
+    playerScore = @get('playerHand').minScore()
+    if dealerScoreMax > 21 or playerScore > dealerScoreMax
+      @trigger 'playerWon', @
+    else 
+      @trigger 'dealerWon', @
+
+    # @resetHands()
 
 
   moveFrom: (from, to) -> 

@@ -13,7 +13,6 @@ class window.Deck extends Backbone.Collection
 
   dealCard: ->
     card = @pop()
-    console.log @length
     @trigger "empty", @ if @length is 0
     card
 

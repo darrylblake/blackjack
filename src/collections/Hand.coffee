@@ -12,6 +12,14 @@ class window.Hand extends Backbone.Collection
   stand: ->
     @trigger 'stand', @
 
+  dealerPlay: ->
+    @first().flip()
+    console.log @scores()[0], @scores()[1]
+    while @scores()[0] < 17 and @scores()[1] < 17
+      console.log @minScore()
+      @add @deck.dealCard() 
+    @trigger 'dealerDone', @
+
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
   , 0
@@ -27,3 +35,5 @@ class window.Hand extends Backbone.Collection
     [@minScore(), @minScore() + 10 * @hasAce()]
 
 
+
+# while (minScore

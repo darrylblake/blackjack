@@ -1,19 +1,21 @@
 class window.GameView extends Backbone.View
 
   template: _.template '
-    <button class="action hit">Hit</button> <button class="stand-button">Stand</button>
+    <div class="message"></div>
+    <button class="action hit">Hit</button> <button class="action stand">Stand</button>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
   '
   events:
     'click .action.hit': -> @model.get('playerHand').hit()
     'click .action.deal': -> @newDeal()
-    'click .stand-button': -> @model.get('playerHand').stand()
+    'click .action.stand': -> @model.get('playerHand').stand()
 
   initialize: ->
     @model.on 'change:dealerHand', => @render()
-    @model.get 'playerHand'
-      .on 'busted', => @bustedDeal()
+    @model.on 'playerBusted', => @gameOver 'Busted'
+    @model.on 'playerWon', => @gameOver 'pWon'
+    @model.on 'dealerWon', => @gameOver 'dWon'
 
     @render();
 
@@ -23,21 +25,28 @@ class window.GameView extends Backbone.View
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
 
-  bustedDeal: ->
+  gameOver: (result)->
+    if (result is 'Busted')
+      @$el.find('.message').text('You busted!')
+    else if (result is 'pWon')
+      @$el.find('.message').text('You won!')
+    else
+      @$el.find('.message').text('You lost!')
+
     @$el
-      .find '.action'
+      .find '.action.hit'
       .text 'Deal'
       .removeClass 'hit'
       .addClass 'deal'
 
   newDeal: ->
+    @$el.find('.message').text('')
     @$el
-      .find '.action'
+      .find '.action.deal'
       .text 'Hit'
       .removeClass 'deal'
       .addClass 'hit'
     @model.resetHands()
-    @model.get 'playerHand'
-      .on 'busted', => @bustedDeal()
+
 
 
