@@ -4,9 +4,10 @@ class window.Hand extends Backbone.Collection
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
-    @add(@deck.pop())
+    @add(hit = @deck.dealCard())
     # check minScore, if over 21 trigger bust event to gameModel
     @trigger 'busted', @ if @minScore() > 21 
+    hit
 
   stand: ->
     @trigger 'stand', @
