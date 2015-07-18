@@ -42,7 +42,8 @@ class window.Game extends Backbone.Model
   
     while from.length > 0
       popped = from.pop()
-      popped.set 'revealed' true
+      # debugger if not popped.get 'revealed'
+      popped.set 'revealed', true
       to.add popped
 
 
