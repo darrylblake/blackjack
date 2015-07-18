@@ -14,16 +14,14 @@ class window.Hand extends Backbone.Collection
 
   dealerPlay: ->
     @first().flip()
-    console.log @scores()[0], @scores()[1]
-    # Ace, 3 > 14 , j 14
-    ###while @scores()[0] < 17 # 4
-      if @scores()[1] < 17 or @scores()[1] >= 21# 14
-        delay = @add @deck.dealCard()
-        setTimeout delay, 500 ###
-
-    @add @deck.dealCard() until @scores()[0] > 17 or 17 <= @scores()[1] <= 21
-
-    @trigger 'dealerDone', @
+    delayAddCard = =>
+      if @scores()[0] < 17 and 17 > @scores()[1]
+        @add @deck.dealCard()
+        setTimeout delayAddCard, 500
+      else
+        @trigger 'dealerDone', @
+    
+    setTimeout delayAddCard, 500
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
