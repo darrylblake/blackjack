@@ -1,10 +1,11 @@
 class window.GameView extends Backbone.View
+  className: 'game'
 
   template: _.template '
     <div class="message"></div>
-    <button class="action hit">Hit</button> <button class="action stand">Stand</button>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
+    <button class="action hit">Hit</button> <button class="action stand">Stand</button>
   '
   events:
     'click .action.hit': -> @model.get('playerHand').hit()
